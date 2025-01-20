@@ -3,7 +3,7 @@ import { Sidebar } from "./sidebar";
 
 const PageWrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex items-stretch">
+    <div className="flex h-full items-stretch">
       <div className="w-[30%] border-r border-deep-blue">
         <Sidebar />
       </div>

@@ -1,3 +1,5 @@
-export enum ROUTES {
-  GAMES = "/games",
-}
+export const ROUTES = [
+  {
+    route: "/games",
+  },
+];
