@@ -1,7 +1,12 @@
+import PageWrapper from "@cards-common-components/PageWrapper";
 import { NextPage } from "next";
 
 const Home: NextPage = () => {
-  return <h1>Starting</h1>;
+  return (
+    <PageWrapper>
+      <div></div>
+    </PageWrapper>
+  );
 };
 
 export default Home;
