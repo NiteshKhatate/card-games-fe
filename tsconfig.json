@@ -19,7 +19,9 @@
       }
     ],
     "paths": {
-      "@cards/*": ["./*"]
+      "@cards/*": ["./*"],
+      "@cards-components/*": ["./components"],
+      "@cards-common-components": ["./components/common"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
