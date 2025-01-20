@@ -20,8 +20,10 @@
     ],
     "paths": {
       "@cards/*": ["./*"],
-      "@cards-components/*": ["./components"],
-      "@cards-common-components": ["./components/common"]
+      "@cards-components/*": ["./components/*"],
+      "@cards-common-components/*": ["./components/common/*"],
+      "@cards-admin/*": ["./components/admin/*"],
+      "@cards-admin-common/*": ["./components/admin/common/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
