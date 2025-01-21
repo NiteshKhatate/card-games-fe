@@ -1,10 +1,9 @@
 import { CardsProp } from "./types";
 
 export const cards: CardsProp = {
-  suits: ["spades", "hearts", "clubs", "diamond"],
+  suits: ["spades", "hearts", "clubs", "diamonds"],
   ranks: [
     "ace",
-    "1",
     "2",
     "3",
     "4",

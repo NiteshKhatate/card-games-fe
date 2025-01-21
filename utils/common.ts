@@ -9,3 +9,17 @@ export const getRandomCards = (count: number): ICard[] => {
   const shuffled = [...deck].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
 };
+
+export const getRandomCardsFromDeck = (
+  selectedDeck: ICard[],
+  count: number
+): {
+  cards: ICard[];
+  remainingDeck: ICard[];
+} => {
+  const shuffled = [...selectedDeck].sort(() => Math.random() - 0.5);
+  return {
+    cards: shuffled.slice(0, count),
+    remainingDeck: shuffled.slice(count, selectedDeck.length),
+  };
+};
