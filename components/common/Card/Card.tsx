@@ -4,7 +4,7 @@ interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ suit, rank }) => {
-  const cardSrc = `./images/svg/${rank}_of_${suit}.svg`; // Path to the SVG
+  const cardSrc = `public/svg/${rank}_of_${suit}.svg`; // Path to the SVG
 
   return (
     <div style={{ width: "150px", height: "auto" }}>
