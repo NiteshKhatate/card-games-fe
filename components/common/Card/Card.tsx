@@ -26,7 +26,9 @@ export const Card: React.FC<CardProps> = ({
           className={`h-full w-full`}
         />
       ) : (
-        <div className="bg-gold h-full w-full" />
+        <div className="bg-gold h-full w-full p-2">
+          <div className="bg-deep-blue rounded h-full w-full" />
+        </div>
       )}
     </div>
   );

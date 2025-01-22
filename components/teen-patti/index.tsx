@@ -48,7 +48,7 @@ export const Hands: React.FC<HandsProps> = ({ cardsInHands, player }) => {
       {sortedCards.map((card, index) => (
         <div
           key={`${player}-card-${index}`}
-          className={`h-[100px] w-[75px] ${cardsRotation[player]}`}
+          className={`h-[100px] w-[70px] ${cardsRotation[player]}`}
         >
           <Card suit={card.suit} rank={card.rank} show={showCards} />
         </div>
