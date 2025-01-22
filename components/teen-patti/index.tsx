@@ -33,6 +33,7 @@ const cardsRotation: Record<PLAYING_PLAYERS, string> = {
 };
 
 export const Hands: React.FC<HandsProps> = ({ cardsInHands, player }) => {
+  const [showCards, setShowCards] = useState<boolean>(false);
   const sortedCards = [...cardsInHands].sort((a, b) => {
     // Sort based on the index of the rank in the cards.ranks array
     return cards.ranks.indexOf(a.rank) - cards.ranks.indexOf(b.rank);
@@ -47,11 +48,16 @@ export const Hands: React.FC<HandsProps> = ({ cardsInHands, player }) => {
       {sortedCards.map((card, index) => (
         <div
           key={`${player}-card-${index}`}
-          className={`h-[100px] w-[100px] ${cardsRotation[player]}`}
+          className={`h-[100px] w-[75px] ${cardsRotation[player]}`}
         >
-          <Card suit={card.suit} rank={card.rank} />
+          <Card suit={card.suit} rank={card.rank} show={showCards} />
         </div>
       ))}
+      <div>
+        <button onClick={() => setShowCards(!showCards)}>
+          {showCards ? "Hide" : "Show"}
+        </button>
+      </div>
     </div>
   );
 };
