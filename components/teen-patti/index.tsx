@@ -12,13 +12,18 @@ enum PLAYING_PLAYERS {
 }
 
 interface HandsProps {
-  cards: ICard[];
+  cardsInHands: ICard[];
   player: PLAYING_PLAYERS;
 }
 
 const deck = cards.suits.flatMap((suit) =>
   cards.ranks.map((rank) => ({ suit, rank }))
 );
+
+const handColOrientation = [
+  PLAYING_PLAYERS.PLAYER_TWO,
+  PLAYING_PLAYERS.PLAYER_FOUR,
+];
 
 const cardsRotation: Record<PLAYING_PLAYERS, string> = {
   [PLAYING_PLAYERS.PLAYER_ONE]: "rotate-0",
@@ -27,18 +32,25 @@ const cardsRotation: Record<PLAYING_PLAYERS, string> = {
   [PLAYING_PLAYERS.PLAYER_FOUR]: "-rotate-90",
 };
 
-export const Hands: React.FC<HandsProps> = ({ cards, player }) => {
+export const Hands: React.FC<HandsProps> = ({ cardsInHands, player }) => {
+  const sortedCards = [...cardsInHands].sort((a, b) => {
+    // Sort based on the index of the rank in the cards.ranks array
+    return cards.ranks.indexOf(a.rank) - cards.ranks.indexOf(b.rank);
+  });
+
   return (
     <div
-      className={`flex gap-4 items-center justify-center ${cardsRotation[player]}`}
+      className={`flex ${
+        handColOrientation.includes(player) && "flex-col"
+      } gap-4 items-center justify-center`}
     >
-      {cards.map((card, index) => (
-        <Card
+      {sortedCards.map((card, index) => (
+        <div
           key={`${player}-card-${index}`}
-          suit={card.suit}
-          rank={card.rank}
-          className={``}
-        />
+          className={`h-[100px] w-[100px] ${cardsRotation[player]}`}
+        >
+          <Card suit={card.suit} rank={card.rank} />
+        </div>
       ))}
     </div>
   );
@@ -81,36 +93,36 @@ const TeenPattiPage: React.FC = () => {
     <div className="p-4">
       <h2 className="text-center">Teen Patti</h2>
       <div>
-        <div className="w-full flex items-stretch justify-center min-h-[100px] gap-4">
+        <div className="w-full flex items-stretch justify-center gap-4">
           <div className="w-1/4"></div>
           <div className="w-1/2 border border-deep-blue p-2 rounded">
             <Hands
-              cards={playerHands[PLAYING_PLAYERS.PLAYER_THREE]}
+              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_THREE]}
               player={PLAYING_PLAYERS.PLAYER_THREE}
             />
           </div>
           <div className="w-1/4"></div>
         </div>
-        <div className="flex items-stretch justify-center min-h-[300px] gap-4">
-          <div className="w-1/3 border border-deep-blue p-2 rounded">
+        <div className="flex items-stretch justify-center gap-4">
+          <div className="w-1/4 border border-deep-blue p-2 rounded">
             <Hands
-              cards={playerHands[PLAYING_PLAYERS.PLAYER_TWO]}
+              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_TWO]}
               player={PLAYING_PLAYERS.PLAYER_TWO}
             />
           </div>
-          <div className="w-1/3"></div>
-          <div className="w-1/3 border border-deep-blue p-2 rounded">
+          <div className="w-1/2"></div>
+          <div className="w-1/4 border border-deep-blue p-2 rounded">
             <Hands
-              cards={playerHands[PLAYING_PLAYERS.PLAYER_FOUR]}
+              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_FOUR]}
               player={PLAYING_PLAYERS.PLAYER_FOUR}
             />
           </div>
         </div>
-        <div className="w-full flex items-stretch justify-center min-h-[100px] gap-4">
+        <div className="w-full flex items-stretch justify-center gap-4">
           <div className="w-1/4"></div>
           <div className="w-1/2 border border-deep-blue p-2 rounded">
             <Hands
-              cards={playerHands[PLAYING_PLAYERS.PLAYER_ONE]}
+              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_ONE]}
               player={PLAYING_PLAYERS.PLAYER_ONE}
             />
           </div>
