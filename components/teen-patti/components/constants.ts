@@ -1,4 +1,4 @@
-import { CardsProp } from "./types";
+import { CardsProp, Player } from "./types";
 
 export const cards: CardsProp = {
   suits: ["spades", "hearts", "clubs", "diamonds"],
@@ -18,3 +18,38 @@ export const cards: CardsProp = {
     "king",
   ],
 };
+
+export const players: Player[] = [
+  {
+    id: "Player_one",
+    name: "Player One",
+    isBot: false,
+    hand: [],
+    isActive: true,
+    betAmount: 1000,
+  },
+  {
+    id: "Player_two",
+    name: "Player Two",
+    isBot: true,
+    hand: [],
+    isActive: true,
+    betAmount: 1000,
+  },
+  {
+    id: "Player_three",
+    name: "Player Three",
+    isBot: true,
+    hand: [],
+    isActive: true,
+    betAmount: 1000,
+  },
+  {
+    id: "Player_four",
+    name: "Player Four",
+    isBot: false,
+    hand: [],
+    isActive: true,
+    betAmount: 1000,
+  },
+];
