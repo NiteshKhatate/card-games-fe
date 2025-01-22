@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card } from "@cards-common-components/Card/Card";
 import { getRandomCardsFromDeck } from "@cards/utils/common";
-import { ICard } from "./components/types";
+import { ICard, Player } from "./components/types";
 import { cards } from "./components/constants";
 
 enum PLAYING_PLAYERS {
@@ -12,8 +12,8 @@ enum PLAYING_PLAYERS {
 }
 
 interface HandsProps {
-  cardsInHands: ICard[];
-  player: PLAYING_PLAYERS;
+  player: Player;
+  playerType: PLAYING_PLAYERS;
 }
 
 const deck = cards.suits.flatMap((suit) =>
@@ -32,9 +32,9 @@ const cardsRotation: Record<PLAYING_PLAYERS, string> = {
   [PLAYING_PLAYERS.PLAYER_FOUR]: "-rotate-90",
 };
 
-export const Hands: React.FC<HandsProps> = ({ cardsInHands, player }) => {
+export const Hands: React.FC<HandsProps> = ({ player, playerType }) => {
   const [showCards, setShowCards] = useState<boolean>(false);
-  const sortedCards = [...cardsInHands].sort((a, b) => {
+  const sortedCards = [...player.hand].sort((a, b) => {
     // Sort based on the index of the rank in the cards.ranks array
     return cards.ranks.indexOf(a.rank) - cards.ranks.indexOf(b.rank);
   });
@@ -42,13 +42,13 @@ export const Hands: React.FC<HandsProps> = ({ cardsInHands, player }) => {
   return (
     <div
       className={`flex ${
-        handColOrientation.includes(player) && "flex-col"
+        handColOrientation.includes(playerType) && "flex-col"
       } gap-4 items-center justify-center`}
     >
       {sortedCards.map((card, index) => (
         <div
           key={`${player}-card-${index}`}
-          className={`h-[100px] w-[70px] ${cardsRotation[player]}`}
+          className={`h-[100px] w-[70px] ${cardsRotation[playerType]}`}
         >
           <Card suit={card.suit} rank={card.rank} show={showCards} />
         </div>
@@ -64,36 +64,57 @@ export const Hands: React.FC<HandsProps> = ({ cardsInHands, player }) => {
 
 const TeenPattiPage: React.FC = () => {
   const [cardsDeck, setCardsDeck] = useState<ICard[]>(deck);
-  const [playerHands, setPlayerHands] = useState<
-    Record<PLAYING_PLAYERS, ICard[]>
-  >({
-    [PLAYING_PLAYERS.PLAYER_ONE]: [],
-    [PLAYING_PLAYERS.PLAYER_TWO]: [],
-    [PLAYING_PLAYERS.PLAYER_THREE]: [],
-    [PLAYING_PLAYERS.PLAYER_FOUR]: [],
-  });
+  const [players, setPlayers] = useState<Player[]>([
+    {
+      id: "Player_one",
+      name: "Player One",
+      isBot: false,
+      hand: [],
+      isActive: true,
+      betAmount: 1000,
+    },
+    {
+      id: "Player_two",
+      name: "Player Two",
+      isBot: true,
+      hand: [],
+      isActive: true,
+      betAmount: 1000,
+    },
+    {
+      id: "Player_three",
+      name: "Player Three",
+      isBot: true,
+      hand: [],
+      isActive: true,
+      betAmount: 1000,
+    },
+    {
+      id: "Player_four",
+      name: "Player Four",
+      isBot: true,
+      hand: [],
+      isActive: true,
+      betAmount: 1000,
+    },
+  ]);
 
   useEffect(() => {
     if (cardsDeck.length === deck.length) {
+      const newPlayers = [...players];
       let remainingDeck = cardsDeck;
-      const newPlayerHands: Record<PLAYING_PLAYERS, ICard[]> = {
-        [PLAYING_PLAYERS.PLAYER_ONE]: [],
-        [PLAYING_PLAYERS.PLAYER_TWO]: [],
-        [PLAYING_PLAYERS.PLAYER_THREE]: [],
-        [PLAYING_PLAYERS.PLAYER_FOUR]: [],
-      };
-
       // Deal 3 cards to each player
-      Object.keys(newPlayerHands).forEach((player) => {
+      newPlayers.forEach((player) => {
         const dealt = getRandomCardsFromDeck(remainingDeck, 3);
-        newPlayerHands[player as unknown as PLAYING_PLAYERS] = dealt.cards;
+        player.hand = dealt.cards;
         remainingDeck = dealt.remainingDeck;
       });
 
-      setPlayerHands(newPlayerHands);
+      setPlayers(newPlayers);
+
       setCardsDeck(remainingDeck);
     }
-  }, [cardsDeck]);
+  }, [cardsDeck, players]);
 
   return (
     <div className="p-4">
@@ -103,8 +124,8 @@ const TeenPattiPage: React.FC = () => {
           <div className="w-1/4"></div>
           <div className="w-1/2 border border-deep-blue p-2 rounded">
             <Hands
-              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_THREE]}
-              player={PLAYING_PLAYERS.PLAYER_THREE}
+              player={players[2]}
+              playerType={PLAYING_PLAYERS.PLAYER_THREE}
             />
           </div>
           <div className="w-1/4"></div>
@@ -112,15 +133,15 @@ const TeenPattiPage: React.FC = () => {
         <div className="flex items-stretch justify-center gap-4">
           <div className="w-1/4 border border-deep-blue p-2 rounded">
             <Hands
-              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_TWO]}
-              player={PLAYING_PLAYERS.PLAYER_TWO}
+              player={players[1]}
+              playerType={PLAYING_PLAYERS.PLAYER_TWO}
             />
           </div>
           <div className="w-1/2"></div>
           <div className="w-1/4 border border-deep-blue p-2 rounded">
             <Hands
-              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_FOUR]}
-              player={PLAYING_PLAYERS.PLAYER_FOUR}
+              player={players[3]}
+              playerType={PLAYING_PLAYERS.PLAYER_FOUR}
             />
           </div>
         </div>
@@ -128,8 +149,8 @@ const TeenPattiPage: React.FC = () => {
           <div className="w-1/4"></div>
           <div className="w-1/2 border border-deep-blue p-2 rounded">
             <Hands
-              cardsInHands={playerHands[PLAYING_PLAYERS.PLAYER_ONE]}
-              player={PLAYING_PLAYERS.PLAYER_ONE}
+              player={players[0]}
+              playerType={PLAYING_PLAYERS.PLAYER_ONE}
             />
           </div>
           <div className="w-1/4"></div>
